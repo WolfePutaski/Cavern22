@@ -7,11 +7,10 @@ public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] private PlayerControls playerControls;
+    [SerializeField] public PlayerControls playerControls;
 
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
-
     private Animator animator;
 
     void Awake()

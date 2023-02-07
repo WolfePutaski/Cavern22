@@ -54,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        //player = GetComponent<Player>();
+        //Debug.Log(player.playerControls);
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -61,22 +63,26 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnEnable()
     {
+        playerControls.PlayerMap.Enable();
         moveIA = playerControls.PlayerMap.HorizontalMovement;
-        moveIA.Enable();
+        //moveIA.Enable();
 
         jumpIA = playerControls.PlayerMap.Jump;
-        jumpIA.Enable();
+        //jumpIA.Enable();
         jumpIA.performed += JumpInput;
 
 
         sprintIA = playerControls.PlayerMap.Sprint;
-        sprintIA.Enable();
+        //sprintIA.Enable();
     }
     void OnDisable()
     {
-        moveIA.Disable();
-        jumpIA.Disable();
-        sprintIA.Disable();
+        //moveIA.Disable();
+        //jumpIA.Disable();
+        //sprintIA.Disable();
+
+        playerControls.PlayerMap.Disable();
+
     }
 
     // Start is called before the first frame update
