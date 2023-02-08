@@ -9,12 +9,15 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private GameObject pivotPoint;
     [SerializeField] private GameObject crosshair;
 
-
     //[SerializeField] private GameObject target;
 
     //private InputAction  
 
     public bool lookAtMouse;
+
+    private Vector2 lookDirection;
+
+    private bool isLookingLeft;
 
     private void Awake()
     {
@@ -31,18 +34,28 @@ public class PlayerAim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        pivotPoint.transform.rotation = /*(Input.GetMouseButton(1))*/ lookAtMouse? rotationToMouse() : (Quaternion.AngleAxis(-60f, Vector3.forward));
+        isLookingLeft = lookDirection.x < 0f;
+
+        transform.localScale = new Vector2(isLookingLeft ? -1f : 1f, transform.localScale.y);
+
+        lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - pivotPoint.transform.position;
+
+        pivotPoint.transform.rotation = lookAtMouse? rotationToDirection(lookDirection) : Quaternion.Euler(0,0,0);
 
         crosshair.transform.position = Vector3.Scale(new Vector3 (1,1,0), Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+
     }
 
-    Quaternion rotationToMouse()
+    Quaternion rotationToDirection(Vector2 direction)
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - pivotPoint.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(angle , Vector3.forward);
+        //Quaternion rotation = isLookingLeft? Quaternion.AngleAxis(angle , Vector3.forward): Quaternion.AngleAxis(angle, -Vector3.forward);
+        Quaternion rotation = Quaternion.AngleAxis(!isLookingLeft? angle:angle + 180f, Vector3.forward);
+
         return rotation;
     }
+
 
     //void AimInput(InputAction.CallbackContext context)
     //{
