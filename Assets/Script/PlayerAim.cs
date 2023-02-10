@@ -7,11 +7,11 @@ public class PlayerAim : MonoBehaviour
 {
 
     [SerializeField] private GameObject pivotPoint;
-    [SerializeField] private GameObject crosshair;
+    [SerializeField] public GameObject crosshair;
 
     //[SerializeField] private GameObject target;
 
-    //private InputAction  
+    public Vector2 AimOffset;
 
     public bool lookAtMouse;
 
@@ -38,12 +38,11 @@ public class PlayerAim : MonoBehaviour
 
         transform.localScale = new Vector2(isLookingLeft ? -1f : 1f, transform.localScale.y);
 
-        lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - pivotPoint.transform.position;
+        crosshair.transform.position = Vector3.Scale(new Vector3 (1,1,0), Camera.main.ScreenToWorldPoint(Input.mousePosition) + (Vector3)AimOffset);
 
-        pivotPoint.transform.rotation = lookAtMouse? rotationToDirection(lookDirection) : Quaternion.Euler(0,0,0);
+        lookDirection = crosshair.transform.position - pivotPoint.transform.position;
 
-        crosshair.transform.position = Vector3.Scale(new Vector3 (1,1,0), Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
+        pivotPoint.transform.rotation = lookAtMouse ? rotationToDirection(lookDirection) : Quaternion.Euler(0, 0, 0);
 
     }
 
