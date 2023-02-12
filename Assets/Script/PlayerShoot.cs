@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -11,10 +10,18 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private PlayerControls playerControls;
     private PlayerAim playerAim;
 
+    public Animator anim;
+
     public bool isAiming;
+
+    [Header("Ammo")]
+    public int maxAmmoInMag;
+    private int ammoInMag;
+    private int reserveAmmo;
 
     private InputAction aimIA;
     private InputAction fireIA;
+    private InputAction reloadIA;
 
     public Transform muzzle;
     public GameObject bullet;
@@ -30,13 +37,21 @@ public class PlayerShoot : MonoBehaviour
         playerControls = new PlayerControls();
         aimIA = playerControls.PlayerMap.Aim;
         fireIA = playerControls.PlayerMap.Attack;
+        reloadIA = playerControls.PlayerMap.Reload;
 
         playerAim = GetComponent<PlayerAim>();
+
+        aimIA.performed += AimInput;
+        aimIA.canceled += AimInputStop;
 
         fireIA.performed += FireInput;
         fireIA.canceled += FireStop;
 
+        reloadIA.performed += ReloadInput;
+
         swayPosEnd = Random.insideUnitCircle;
+
+        ReloadMag();
     }
 
     private void OnEnable()
@@ -52,60 +67,69 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isAiming = aimIA.IsPressed();
-        playerAim.lookAtMouse = isAiming;
+        Aiming();
     }
-
     private void FixedUpdate()
     {
         CrosshairUpdate();
     }
 
-    void FireInput(InputAction.CallbackContext context)
+    void Aiming()
     {
-        
-        Debug.Log("Start Fire!");
+        playerAim.lookAtMouse = isAiming;
+        playerAim.defaultAimRange = isAiming ? 0.3f : 0.1f;
 
-        Shoot();
+        anim.SetBool("isAiming", isAiming);
     }
+
+
 
     void Shoot()
     {
-        //bullet = Instantiate(bullet,muzzle.position, muzzle.rotation);
-        //bullet.transform.rotation = muzzle.transform.rotation;
-        //bullet.GetComponent<Rigidbody2D>().velocity = Vector2.right * 100f;
-        ShootRay(0, playerAim.crosshair.transform.position, 0f);
-        RecoilKick(new Vector2 (Random.Range(0.6f, 0.1f), Random.Range(1f,.8f)));
-
-        void ShootRay(float Damage, Vector3 AimPoint, float spread)
+        if (ammoInMag > 0)
         {
-            Vector3 hitDir = (AimPoint - muzzle.position).normalized + ((Random.Range(-spread, spread) * new Vector3(Mathf.Sin(spread), Mathf.Cos(spread),0)));
+            ammoInMag--;
+            anim.SetTrigger("fire");
 
-            RaycastHit2D[] hit2D;
-            hit2D = Physics2D.RaycastAll(muzzle.position, hitDir , 1000f);
-            //Debug.DrawRay(muzzle.position, hitDir * 1000f, Color.blue, 1f);
+            ShootRay(0, playerAim.crosshair.transform.position, 0f);
+            RecoilKick(new Vector2(Random.Range(0.6f, 0.1f), Random.Range(.5f, .2f)));
 
-
-            if (hit2D.Length > 1 && hit2D[1].transform.CompareTag("Enemy"))
+            void ShootRay(float Damage, Vector3 AimPoint, float spread)
             {
-                //hit2D[1].transform.GetComponent<SC_Health>().Damage(Damage);
+                Vector3 hitDir = (AimPoint - muzzle.position).normalized + ((Random.Range(-spread, spread) * new Vector3(Mathf.Sin(spread), Mathf.Cos(spread), 0)));
+
+                RaycastHit2D[] hit2D;
+                hit2D = Physics2D.RaycastAll(muzzle.position, hitDir, 1000f);
+                //Debug.DrawRay(muzzle.position, hitDir * 1000f, Color.blue, 1f);
+
+
+                if (hit2D.Length > 1 && hit2D[1].transform.CompareTag("Enemy"))
+                {
+                    //hit2D[1].transform.GetComponent<SC_Health>().Damage(Damage);
+                }
+
+                Vector3 lastHitpoint = hit2D.Length > 0 ? (Vector3)hit2D[0].point : hitDir * 1000f;
+
+                //GameObject bul = Instantiate(bullet, muzzle.position, Quaternion.identity);
+
+                GameObject bul = ObjectPooler.SharedInstance.GetPooledObject("bullet");
+                bul.SetActive(true);
+                Vector3[] lineTracerPos = new Vector3[2];
+                lineTracerPos.SetValue(muzzle.position, 0);
+                lineTracerPos.SetValue(lastHitpoint, 1);
+                bul.GetComponent<LineRenderer>().SetPositions(lineTracerPos);
+                ObjectPooler.SharedInstance.DeactivePooledObject(bul, .04f);
+
+                if (hit2D.Length > 1) { Debug.Log("hit " + hit2D[0].transform.gameObject); }
+
             }
 
-            Vector3 lastHitpoint = hit2D.Length > 0 ? (Vector3)hit2D[0].point : hitDir * 1000f;
-
-            //GameObject bul = Instantiate(bullet, muzzle.position, Quaternion.identity);
-
-            GameObject bul = ObjectPooler.SharedInstance.GetPooledObject("bullet");
-            bul.SetActive(true);
-            Vector3[] lineTracerPos = new Vector3[2];
-            lineTracerPos.SetValue(muzzle.position, 0);
-            lineTracerPos.SetValue(lastHitpoint, 1);
-            bul.GetComponent<LineRenderer>().SetPositions(lineTracerPos);
-            ObjectPooler.SharedInstance.DeactivePooledObject(bul, .04f);
-
-            if (hit2D.Length > 1) { Debug.Log("hit " + hit2D[0].transform.gameObject); }
-
         }
+        else
+        {
+            anim.SetTrigger("fire_empty");
+        }
+
 
     }
 
@@ -118,7 +142,7 @@ public class PlayerShoot : MonoBehaviour
 
         swayPosCurrent = Vector2.Lerp(swayPosCurrent, swayPosEnd, .2f);
 
-        if ((swayPosStart.magnitude - swayPosCurrent.magnitude) /(swayPosStart.magnitude - swayPosEnd.magnitude) > .6f)
+        if ((swayPosStart.magnitude - swayPosCurrent.magnitude) / (swayPosStart.magnitude - swayPosEnd.magnitude) > .6f)
         {
             swayPosStart = swayPosCurrent;
             swayPosEnd = Random.insideUnitCircle * .1f;
@@ -141,11 +165,51 @@ public class PlayerShoot : MonoBehaviour
     void RecoilKick(Vector2 recoilValue)
     {
         recoilOffset += recoilValue;
+
+        //StartCoroutine(recoilKick(recoilValue));
+    }
+
+    IEnumerator recoilKick(Vector2 recoilValue)
+    {
+        yield return new WaitForSeconds(0.05f);
+        recoilOffset += recoilValue;
+
+    }
+
+    void AimInput(InputAction.CallbackContext context)
+    {
+        isAiming = true;
+    }
+
+    void AimInputStop(InputAction.CallbackContext context)
+    {
+        isAiming = false;
+    }
+    void FireInput(InputAction.CallbackContext context)
+    {
+        
+        Debug.Log("Start Fire!");
+
+        if (isAiming)
+        {
+            Shoot();
+        }
     }
 
     void FireStop(InputAction.CallbackContext context)
     {
         Debug.Log("STOP Fire!");
+    }
+
+    void ReloadInput(InputAction.CallbackContext context)
+    {
+        anim.Play("ar15_reload");
+        isAiming = false;
+    }
+
+    void ReloadMag()
+    {
+        ammoInMag = maxAmmoInMag;
     }
 
 }

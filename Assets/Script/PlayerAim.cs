@@ -19,6 +19,10 @@ public class PlayerAim : MonoBehaviour
 
     private bool isLookingLeft;
 
+    public GameObject cameraTarget;
+    public float defaultAimRange;
+
+
     private void Awake()
     {
 
@@ -43,6 +47,8 @@ public class PlayerAim : MonoBehaviour
         lookDirection = crosshair.transform.position - pivotPoint.transform.position;
 
         pivotPoint.transform.rotation = lookAtMouse ? rotationToDirection(lookDirection) : Quaternion.Euler(0, 0, 0);
+
+        cameraTarget.transform.position = Vector2.Lerp(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition), defaultAimRange);
 
     }
 
