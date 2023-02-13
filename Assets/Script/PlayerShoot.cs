@@ -92,7 +92,7 @@ public class PlayerShoot : MonoBehaviour
             anim.SetTrigger("fire");
 
             ShootRay(0, playerAim.crosshair.transform.position, 0f);
-            RecoilKick(new Vector2(Random.Range(0.6f, 0.1f), Random.Range(.5f, .2f)));
+            RecoilKick(new Vector2(Random.Range(-.3f, .3f), Random.Range(.6f, .3f)));
 
             void ShootRay(float Damage, Vector3 AimPoint, float spread)
             {

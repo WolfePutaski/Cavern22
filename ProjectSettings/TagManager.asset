@@ -7,6 +7,10 @@ TagManager:
   - Floor
   - bullet
   - Enemy
+  - PauseMenu
+  - BulletTracer
+  - CameraHolder
+  - WeakPoint
   layers:
   - Default
   - TransparentFX
@@ -41,6 +45,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2874345859
+    locked: 0
   - name: Character
     uniqueID: 1651142681
     locked: 0
