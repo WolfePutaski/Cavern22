@@ -230,4 +230,14 @@ public class PlayerMovement : MonoBehaviour
             //}
         }
     }
+
+    public void DisableMovement()
+    {
+        playerControls.PlayerMap.Disable();
+    }
+
+    public void EnableMovement()
+    {
+        playerControls.PlayerMap.Enable();
+    }
 }

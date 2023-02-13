@@ -14,9 +14,12 @@ public class PlayerShoot : MonoBehaviour
 
     public bool isAiming;
 
+    public LayerMask shootLayer;
+
     [Header("Ammo")]
     public int maxAmmoInMag;
-    private int ammoInMag;
+    private int _ammoInMag;
+    public int ammoInMag { get { return _ammoInMag; } }
     private int reserveAmmo;
 
     private InputAction aimIA;
@@ -86,9 +89,9 @@ public class PlayerShoot : MonoBehaviour
 
     void Shoot()
     {
-        if (ammoInMag > 0)
+        if (_ammoInMag > 0)
         {
-            ammoInMag--;
+            _ammoInMag--;
             anim.SetTrigger("fire");
 
             ShootRay(0, playerAim.crosshair.transform.position, 0f);
@@ -99,7 +102,7 @@ public class PlayerShoot : MonoBehaviour
                 Vector3 hitDir = (AimPoint - muzzle.position).normalized + ((Random.Range(-spread, spread) * new Vector3(Mathf.Sin(spread), Mathf.Cos(spread), 0)));
 
                 RaycastHit2D[] hit2D;
-                hit2D = Physics2D.RaycastAll(muzzle.position, hitDir, 1000f);
+                hit2D = Physics2D.RaycastAll(muzzle.position, hitDir, 1000f,shootLayer);
                 //Debug.DrawRay(muzzle.position, hitDir * 1000f, Color.blue, 1f);
 
 
@@ -110,7 +113,6 @@ public class PlayerShoot : MonoBehaviour
 
                 Vector3 lastHitpoint = hit2D.Length > 0 ? (Vector3)hit2D[0].point : hitDir * 1000f;
 
-                //GameObject bul = Instantiate(bullet, muzzle.position, Quaternion.identity);
 
                 GameObject bul = ObjectPooler.SharedInstance.GetPooledObject("bullet");
                 bul.SetActive(true);
@@ -120,7 +122,24 @@ public class PlayerShoot : MonoBehaviour
                 bul.GetComponent<LineRenderer>().SetPositions(lineTracerPos);
                 ObjectPooler.SharedInstance.DeactivePooledObject(bul, .04f);
 
-                if (hit2D.Length > 1) { Debug.Log("hit " + hit2D[0].transform.gameObject); }
+                if (hit2D.Length > 0) 
+                {
+                    Debug.Log("hit " + hit2D[0].transform.gameObject);
+
+                    GameObject target = hit2D[0].transform.gameObject;
+
+                    if (target != null)
+                    {
+                        if (target.TryGetComponent(out HealthSystem health))
+                        {
+                            health.Damage(Random.Range(20f, 34f));
+                            if (health.healthCurrent <= 0)
+                            {
+                                health.PlayAnimation("die");
+                            }
+                        }
+                    }
+                }
 
             }
 
@@ -209,7 +228,7 @@ public class PlayerShoot : MonoBehaviour
 
     void ReloadMag()
     {
-        ammoInMag = maxAmmoInMag;
+        _ammoInMag = maxAmmoInMag;
     }
 
 }

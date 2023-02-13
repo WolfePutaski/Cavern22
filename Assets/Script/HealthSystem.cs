@@ -5,12 +5,13 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     public float healthStart;
-    public float healthCurrent;
+    private float _healthCurrent;
+    public float healthCurrent { get { return _healthCurrent; } }
 
     // Start is called before the first frame update
     virtual protected void Start()
     {
-        healthCurrent = healthStart;
+        _healthCurrent = healthStart;
     }
     public virtual void Kill()
     {
@@ -19,6 +20,37 @@ public class HealthSystem : MonoBehaviour
 
     public virtual void Damage(float damage)
     {
-        healthCurrent -= damage;
+        _healthCurrent -= damage;
+    }
+
+    public virtual void Push(Vector2 force)
+    {
+        if( TryGetComponent(out Rigidbody2D rb))
+        {
+            rb.AddForce(force,ForceMode2D.Impulse);
+        }
+        
+    }
+
+    public virtual void PlayAnimation(string animationState)
+    {
+        if (TryGetComponent(out Animator anim) && anim.enabled)
+        {
+            anim.Play(animationState);
+        }
+    }
+
+    public virtual void SetCollideLayer(bool setActive)
+    {
+        int newLayer = LayerMask.NameToLayer(setActive ? "ActivePawn" : "DeadPawn");
+        gameObject.layer = newLayer;
+
+    }
+
+    public virtual void SetCollideLayerDie()
+    {
+        int newLayer = LayerMask.NameToLayer("DeadPawn");
+        gameObject.layer = newLayer;
+
     }
 }

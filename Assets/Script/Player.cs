@@ -17,23 +17,7 @@ public class Player : MonoBehaviour
     {
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
-        //animator = GetComponent<Animator>();
-        //sprite = GetComponent<SpriteRenderer>();
     }
-    //void OnEnable()
-    //{
-    //    moveIA = playerControls.CharacterMap.HorizontalMovement;
-    //    moveIA.Enable();
-
-    //    jumpIA = playerControls.CharacterMap.Jump;
-    //    jumpIA.Enable();
-    //    jumpIA.performed += JumpInput;
-    //}
-    //void OnDisable()
-    //{
-    //    moveIA.Disable();
-    //    jumpIA.Disable();
-    //}
 
     void Start()
     {

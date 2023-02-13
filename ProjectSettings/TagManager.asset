@@ -18,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - ActivePawn
+  - DeadPawn
   - 
   - 
   - 
@@ -48,7 +48,10 @@ TagManager:
   - name: Background
     uniqueID: 2874345859
     locked: 0
-  - name: Character
+  - name: Pawn
+    uniqueID: 3473556395
+    locked: 0
+  - name: Player
     uniqueID: 1651142681
     locked: 0
   - name: Default
