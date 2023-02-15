@@ -87,9 +87,8 @@ public class Enemy : MonoBehaviour
 
     void FollowPlayer()
     {
-        transform.localScale = playerDirection.x > 0 ? Vector2.one : new Vector2(-1, 1); 
-        Vector2 moveDirection = isWinged ? playerDirection : Vector2.Scale(Vector2.right, playerDirection);
-        rb.velocity = moveSpeed * moveDirection;
+        transform.localScale = playerDirection.x > 0 ? Vector2.one : new Vector2(-1, 1);
+        rb.velocity = isWinged ? moveSpeed * playerDirection: new Vector2 (playerDirection.x * moveSpeed, rb.velocity.y);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

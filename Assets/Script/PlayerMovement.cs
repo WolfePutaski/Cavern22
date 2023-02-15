@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
 
     private bool holdSprint;
+    private bool isStunned;
 
     [Header("Movement Speed")]
 
@@ -94,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         //if (moveIA.ReadValue<float>() != 0) { Debug.Log("Pressed Walk"); }
+        
         moveDirection = Vector2.right * moveIA.ReadValue<float>();
 
         if (onJumpBuffer && isGrounded)
@@ -116,6 +118,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isStunned) { return; }
+
         holdSprint = sprintIA.IsPressed();
 
         if (holdSprint)
@@ -233,11 +237,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void DisableMovement()
     {
-        playerControls.PlayerMap.Disable();
+        //rb.velocity = Vector2.Scale(rb.velocity, Vector2.up);
+
+        isStunned = true;
     }
 
     public void EnableMovement()
     {
-        playerControls.PlayerMap.Enable();
+        isStunned = false;
     }
 }
