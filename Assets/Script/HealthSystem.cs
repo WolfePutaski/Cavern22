@@ -7,11 +7,15 @@ public class HealthSystem : MonoBehaviour
     public float healthStart;
     private float _healthCurrent;
     public float healthCurrent { get { return _healthCurrent; } }
+    public AudioClip hurtSound;
+
+    private AudioSource _audioSource;
 
     // Start is called before the first frame update
     virtual protected void Start()
     {
         _healthCurrent = healthStart;
+        _audioSource = GetComponent<AudioSource>();
     }
     public virtual void Kill()
     {
@@ -21,6 +25,13 @@ public class HealthSystem : MonoBehaviour
     public virtual void Damage(float damage)
     {
         _healthCurrent -= damage;
+    }
+
+    public virtual void Damage(float damage, bool playHurtSound)
+    {
+        _healthCurrent -= damage;
+        if(!playHurtSound) { return; }
+        _audioSource.PlayOneShot(hurtSound);
     }
 
     public virtual void Push(Vector2 force)
@@ -56,6 +67,6 @@ public class HealthSystem : MonoBehaviour
 
     public virtual void PlaySound(AudioClip audioClip)
     {
-        GetComponent<AudioSource>().PlayOneShot(audioClip);
+        _audioSource.PlayOneShot(audioClip);
     }
 }

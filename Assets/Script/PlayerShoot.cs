@@ -134,7 +134,7 @@ public class PlayerShoot : MonoBehaviour
                     {
                         if (target.TryGetComponent(out HealthSystem health))
                         {
-                            health.Damage(Random.Range(20f, 34f));
+                            health.Damage(Random.Range(20f, 34f),true);
                             if (health.healthCurrent <= 0)
                             {
                                 health.PlayAnimation("die");
