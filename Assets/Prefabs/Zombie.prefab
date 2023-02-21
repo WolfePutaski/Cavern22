@@ -694,7 +694,7 @@ GameObject:
   - component: {fileID: 4182094114563050426}
   - component: {fileID: 6311160931118936978}
   - component: {fileID: 1549199070}
-  - component: {fileID: 1996741998597280688}
+  - component: {fileID: 772080998793812815}
   - component: {fileID: 2521008605349318491}
   m_Layer: 6
   m_Name: Zombie
@@ -788,7 +788,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1996741998597280688
+--- !u!114 &772080998793812815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -797,10 +797,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7974199748637475618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4393d3f858763974eb1f0774eb6bfa5f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0750099aed2c61e4d81da5db50ab2dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthStart: 100
+  wormToSpawn: {fileID: 4844602846811957216, guid: edd4aa2f65e8d03418d9c0e228b5f442, type: 3}
+  chanceToSpawn: 100
 --- !u!114 &2521008605349318491
 MonoBehaviour:
   m_ObjectHideFlags: 0

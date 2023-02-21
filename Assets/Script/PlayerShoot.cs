@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerShoot : MonoBehaviour
 {
-
-    [SerializeField] private PlayerControls playerControls;
+    public PlayerControls playerControls;
     private PlayerAim playerAim;
 
     public Animator anim;
 
     public bool isAiming;
+    public bool isHoldingAim;
 
     public LayerMask shootLayer;
 
@@ -55,6 +55,8 @@ public class PlayerShoot : MonoBehaviour
         swayPosEnd = Random.insideUnitCircle;
 
         ReloadMag();
+
+        Cursor.visible = false;
     }
 
     private void OnEnable()
@@ -197,11 +199,13 @@ public class PlayerShoot : MonoBehaviour
 
     void AimInput(InputAction.CallbackContext context)
     {
+        isHoldingAim = true;
         isAiming = true;
     }
 
     void AimInputStop(InputAction.CallbackContext context)
     {
+        isHoldingAim = false;
         isAiming = false;
     }
     void FireInput(InputAction.CallbackContext context)
@@ -213,6 +217,11 @@ public class PlayerShoot : MonoBehaviour
         {
             Shoot();
         }
+    }
+
+    void ReturnToAim()
+    {
+        if (isHoldingAim) { isAiming = true; }
     }
 
     void FireStop(InputAction.CallbackContext context)

@@ -112,10 +112,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5455521443988750199}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.6, y: 2.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5788414548234677482}
   m_Father: {fileID: 0}
@@ -187,7 +187,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &4515476491350110181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4393d3f858763974eb1f0774eb6bfa5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthStart: 40
+  healthStart: 30
 --- !u!114 &568439047815361294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  pushForce: {x: 20, y: 1}
-  attackDelay: 0
+  pushForce: {x: 8, y: 1}
+  pushForceSelf: {x: 1, y: 1}
   isWinged: 1
+  sizeVariation: 0.4

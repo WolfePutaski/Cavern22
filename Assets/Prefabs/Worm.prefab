@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4393d3f858763974eb1f0774eb6bfa5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthStart: 25
+  healthStart: 10
 --- !u!114 &1111574417996376985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,8 +216,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0.6
   pushForce: {x: 15, y: 1}
-  attackDelay: 0
+  pushForceSelf: {x: 0, y: 0}
   isWinged: 0
+  sizeVariation: 0
 --- !u!212 &4844602846811957219
 SpriteRenderer:
   m_ObjectHideFlags: 0

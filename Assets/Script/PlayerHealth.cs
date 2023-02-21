@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerHealth : HealthSystem
 {
     private Animator anim;
+    private PlayerShoot playerShoot;
+    private PlayerMovement playerMovement;
+    private PlayerAim playerAim;
     private bool canTakeDamage;
     [SerializeField] private float damageDelay;
     private float damageDelayCount;
@@ -13,6 +16,9 @@ public class PlayerHealth : HealthSystem
     {
         base.Start();
         anim = GetComponent<Animator>();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerShoot = GetComponent<PlayerShoot>();
+        playerAim = GetComponent<PlayerAim>();
     }
 
     void Update()
@@ -37,6 +43,11 @@ public class PlayerHealth : HealthSystem
 
     protected virtual void GameOver()
     {
-        Kill();
+        anim.Play("die");
+        playerMovement.enabled = false;
+        playerShoot.enabled = false;
+        playerAim.enabled = false;
+        //playerShoot.isAiming = false;
+        //Kill();
     }
 }

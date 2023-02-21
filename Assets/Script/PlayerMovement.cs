@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Player player;
 
-    [SerializeField] private PlayerControls playerControls;
+    public PlayerControls playerControls;
     private InputAction moveIA;
     private InputAction jumpIA;
     private InputAction sprintIA;

@@ -10,4 +10,10 @@ public class gunAnimEvent : MonoBehaviour
     {
         playerGunFunction.SendMessage("ReloadMag", SendMessageOptions.RequireReceiver);
     }
+
+    void checkReturnToAim()
+    {
+        playerGunFunction.SendMessage("ReturnToAim", SendMessageOptions.RequireReceiver);
+
+    }
 }

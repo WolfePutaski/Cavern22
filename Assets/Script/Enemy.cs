@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Vector2 pushForce;
-    [SerializeField] private float attackDelay;
+    [SerializeField] private Vector2 pushForceSelf;
     private float attackDelayCount;
 
     private GameObject[] detectedObject;
@@ -22,6 +22,8 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
 
+    public float sizeVariation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,8 @@ public class Enemy : MonoBehaviour
         health = GetComponent<HealthSystem>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        transform.localScale = Vector2.one * Random.Range(1f- sizeVariation, 1f+sizeVariation);
     }
 
     // Update is called once per frame
@@ -99,9 +103,13 @@ public class Enemy : MonoBehaviour
 
             HealthSystem playerHealth = _player.GetComponent<HealthSystem>();
 
+            if (playerHealth.healthCurrent <= 0) { return; }
+
             Vector2 pushDirection = playerDirection.x > 0 ? Vector2.one : new Vector2(-1, 1);
             playerHealth.Push(Vector2.Scale(pushDirection, pushForce));
             playerHealth.Damage(1);
+
+            health.Push(Vector2.Scale(playerDirection, pushForceSelf));
         }
     }
 }
