@@ -16,4 +16,9 @@ public class gunAnimEvent : MonoBehaviour
         playerGunFunction.SendMessage("ReturnToAim", SendMessageOptions.RequireReceiver);
 
     }
+
+    void PlaySound(AudioClip audioClip)
+    {
+        GetComponent<AudioSource>().PlayOneShot(audioClip);
+    }
 }

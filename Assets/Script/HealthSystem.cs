@@ -53,4 +53,9 @@ public class HealthSystem : MonoBehaviour
         gameObject.layer = newLayer;
 
     }
+
+    public virtual void PlaySound(AudioClip audioClip)
+    {
+        GetComponent<AudioSource>().PlayOneShot(audioClip);
+    }
 }
