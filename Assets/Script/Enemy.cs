@@ -32,6 +32,8 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
+        isAlert = true;
+
         transform.localScale = Vector2.one * Random.Range(1f- sizeVariation, 1f+sizeVariation);
     }
 

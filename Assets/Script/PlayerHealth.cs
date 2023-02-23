@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : HealthSystem
 {
@@ -12,6 +14,10 @@ public class PlayerHealth : HealthSystem
     [SerializeField] private float damageDelay;
     private float damageDelayCount;
 
+
+
+
+
     protected override void Start()
     {
         base.Start();
@@ -19,6 +25,9 @@ public class PlayerHealth : HealthSystem
         playerMovement = GetComponent<PlayerMovement>();
         playerShoot = GetComponent<PlayerShoot>();
         playerAim = GetComponent<PlayerAim>();
+
+
+
     }
 
     void Update()
@@ -50,4 +59,6 @@ public class PlayerHealth : HealthSystem
         //playerShoot.isAiming = false;
         //Kill();
     }
+
+
 }

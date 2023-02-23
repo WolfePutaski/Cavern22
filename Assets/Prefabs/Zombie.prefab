@@ -804,7 +804,7 @@ MonoBehaviour:
   healthStart: 100
   hurtSound: {fileID: 8300000, guid: 5a1b12b3cf2335e4fa00ea88f03f2299, type: 3}
   wormToSpawn: {fileID: 4844602846811957216, guid: edd4aa2f65e8d03418d9c0e228b5f442, type: 3}
-  chanceToSpawn: 40
+  chanceToSpawn: 0.4
 --- !u!114 &2521008605349318491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,7 +817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4597ca82a0edc844988abb60251c1f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.5
+  moveSpeed: 0.6
   pushForce: {x: 10, y: 2.5}
   pushForceSelf: {x: 0, y: 0}
   isWinged: 0
@@ -831,7 +831,7 @@ AudioSource:
   m_GameObject: {fileID: 7974199748637475618}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 71e50e32f0de47943a09ca19bfdb9ccd, type: 2}
+  OutputAudioMixerGroup: {fileID: -4637455642573726847, guid: 71e50e32f0de47943a09ca19bfdb9ccd, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

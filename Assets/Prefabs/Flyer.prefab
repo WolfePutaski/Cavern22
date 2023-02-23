@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4597ca82a0edc844988abb60251c1f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 2.2
   pushForce: {x: 8, y: 1}
   pushForceSelf: {x: 1, y: 1}
   isWinged: 1
@@ -229,7 +229,7 @@ AudioSource:
   m_GameObject: {fileID: 5455521443988750199}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 71e50e32f0de47943a09ca19bfdb9ccd, type: 2}
+  OutputAudioMixerGroup: {fileID: -4637455642573726847, guid: 71e50e32f0de47943a09ca19bfdb9ccd, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

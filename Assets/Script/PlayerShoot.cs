@@ -138,6 +138,7 @@ public class PlayerShoot : MonoBehaviour
                             if (health.healthCurrent <= 0)
                             {
                                 health.PlayAnimation("die");
+                                GetComponent<PlayerUI>().killCount++;
                             }
                         }
                     }
